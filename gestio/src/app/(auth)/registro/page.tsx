@@ -10,6 +10,7 @@ export default function RegistroPage() {
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState("");
 
