@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 import CrearClientePage from "@/components/forms/create_cliente";
+import Modalfiled, { FieldTemp } from "@/components/ui/modal_filed";
+import FieldList from "@/components/forms/lista_campos";
 
 export default function NuevoClientePage() {
 
@@ -11,13 +13,29 @@ export default function NuevoClientePage() {
     const [email, setEmail] = useState("");
     const [telefono, setTelefono] = useState("");
     const [notas, setNotas] = useState("");
-    
+
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState("");
+
+    const [fields, setFields] = useState<FieldTemp[]>([]);
 
     const router = useRouter();
     const supabase = createClient();
 
+
+    function handleAddField(nuevoField: FieldTemp) {
+        setFields(prev => [...prev, nuevoField]);
+    }
+
+    function handleValorChange(id: string, valor: string) {
+        setFields(prev =>
+            prev.map(f => f.id === id ? { ...f, valor } : f)
+        );
+    }
+
+    function handleDeleteField(id: string) {
+        setFields(prev => prev.filter(f => f.id !== id));
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,18 +65,33 @@ export default function NuevoClientePage() {
 
         router.push("/clientes");
     };
-    return(
+    return (
         <div>
-            <CrearClientePage 
-                nombre={nombre}
-                setNombre={setNombre}
-                email={email}
-                setEmail={setEmail}
-                telefono={telefono}
-                setTelefono={setTelefono}
-                notas={notas}
-                setNotas={setNotas}
-            />
+            <div>
+                <CrearClientePage
+                    nombre={nombre}
+                    setNombre={setNombre}
+                    email={email}
+                    setEmail={setEmail}
+                    telefono={telefono}
+                    setTelefono={setTelefono}
+                    notas={notas}
+                    setNotas={setNotas}
+                />
+                <div>
+                    <Modalfiled onAdd={handleAddField} />
+                </div>
+                <div>
+                    <FieldList fields={fields} onValorChange={handleValorChange} onDelete={handleDeleteField} />
+                </div>
+                {/*Agregar Valores de los Fields Agregados*/}
+                <div>
+                    <li className="fields-list">
+
+                    </li>
+                </div>
+            </div>
+
         </div>
     )
-}
+}   
