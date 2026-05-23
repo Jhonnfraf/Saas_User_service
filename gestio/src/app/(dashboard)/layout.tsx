@@ -6,21 +6,24 @@ export default function DashboardLayout({
 }:{
     children: React.ReactNode;
 }){
-    return(
-        <div className="flex">
-             {/** Sidebar izquierdo */}
-            <Sidebar />
+    return (
+    <div className="flex h-screen overflow-hidden bg-[#13131f]">
 
-            {/*Columna derecha: topbar + contenido */}
-            <div className="flex flex-col flex-1 ring-2">
-                {/*Barra superior */}
-                <Header/>
+        {/* Sidebar izquierdo — fijo */}
+        <Sidebar />
 
-                {/*Cambio de contenido segun pagina */}
-                <main className="flex-1 overflow-auto p-6">
-                    {children}
-                </main>
-            </div>
+        {/* Columna derecha: topbar + contenido */}
+        <div className="flex flex-col flex-1 min-w-0">
+
+            {/* Barra superior */}
+            <Header />
+
+            {/* Contenido — único scroll aquí */}
+            <main className="flex-1 overflow-y-auto p-6">
+                {children}
+            </main>
+
         </div>
-    )
+    </div>
+);
 }
